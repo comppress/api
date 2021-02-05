@@ -29,12 +29,6 @@ jobs:
     - name: Run docker build
       run: docker build --tag ${{ env.registry }}/${{ env.image_name }}:$GITHUB_SHA .
     
-    - name: Test image name 
-      run: docker ps
-    
-    - name: Test image name 
-      run: echo "${{ env.registry }}/${{ env.image_name }}:$GITHUB_SHA"
-    
     - name: Login to ${{ env.registry }} Docker Registry
       uses: docker/login-action@v1
       with:
@@ -44,3 +38,6 @@ jobs:
     
     - name: Run docker push
       run: docker push ${{ env.registry }}/${{ env.image_name }}:$GITHUB_SHA
+    
+    - name: Name of Image 
+      run: echo "${{ env.registry }}/${{ env.image_name }}:$GITHUB_SHA"
