@@ -4,6 +4,16 @@ import org.example.API.model.Content;
 
 public class ContentPojo implements Comparable{
 
+    private long countRatings;
+
+    public long getCountRatings() {
+        return countRatings;
+    }
+
+    public void setCountRatings(long countRatings) {
+        this.countRatings = countRatings;
+    }
+
     private Content content;
 
     private Float rating;

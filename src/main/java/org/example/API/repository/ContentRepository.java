@@ -53,5 +53,7 @@ public interface ContentRepository extends JpaRepository<Content,Long> {
     @Query(value= "SELECT * FROM mydb.content WHERE id NOT IN (SELECT DISTINCT content_id FROM mydb.rating ) AND category = :categoryValue AND creation_date >= NOW() - interval 1 day ORDER BY creation_date DESC LIMIT :limitNumber ;" , nativeQuery = true)
     public List<Content> selectDistinctNotRatedContent(@Param("categoryValue") String category, @Param("limitNumber") int limitNumber);
 
+    @Query(value= "SELECT * FROM mydb.content WHERE id IN (SELECT DISTINCT content_id FROM mydb.rating )" , nativeQuery = true)
+    public List<Long> selectDistinctRatedContent();
 
 }

@@ -81,6 +81,7 @@ public class NewsController {
             // get rated Content for this Category
             List<Long> listRatedId = contentRepository.selectDistinctRatedContentWithCategory(category);
             HashMap<Long, Float> hashMapIdAverageRating = calculateAverageRating(listRatedId);
+            HashMap<Long,Long> hashMapIdNumberRatings = getHashMapIdNumberRatings();
 
             List<Content> contentList = new ArrayList<Content>();
 
@@ -91,7 +92,7 @@ public class NewsController {
             Data data = new Data();
             // Convert to ContentPojo which implements the runnable interface
             // Todo check complexity
-            List<ContentPojo> contentPojoList = convertContentToPojo(contentList,hashMapIdAverageRating);
+            List<ContentPojo> contentPojoList = convertContentToPojo(contentList,hashMapIdAverageRating, hashMapIdNumberRatings);
             // Sort the list so the best rating is top, max 5
             Collections.sort(contentPojoList);
 
@@ -156,6 +157,8 @@ public class NewsController {
     @GetMapping("/articles")
     List<Data> getRatedData(@RequestParam(defaultValue = "50") int listLength, @RequestParam("interval") String interval) throws Exception {
 
+        long start = System.nanoTime();
+
         // Check if Argument for listLength is valid
         if(listLength <= 0){
             // TODO return HTTP Error Code or throw Exception
@@ -172,7 +175,16 @@ public class NewsController {
         List<String> categories = categoryOrder.getListCategories();
 
         // Get Articles for every Category with calculated Ratings in the correct Order
-        return calculateRatings(interval, categories, listLength);
+        List<Data> dataList = calculateRatings(interval, categories, listLength);
+
+        long finish = System.nanoTime();
+        long timeElapsed = finish - start;
+
+        System.out.println(interval + " Nanoseconds " + timeElapsed);
+        double seconds = (double)timeElapsed / 1_000_000_000.0;
+        System.out.println(interval + " Seconds " + seconds);
+
+        return dataList;
     }
 
     private ArrayList<Data> calculateRatings(String interval, List<String> categories, int listLength) {
@@ -208,13 +220,15 @@ public class NewsController {
 
         HashMap<Long, Float> hashMapIdAverageRating = calculateAverageRating(listRatedId);
 
+        HashMap<Long,Long> hashMapIdNumberRatings = getHashMapIdNumberRatings();
+
         List<Content> contentList = new ArrayList<Content>();
         for(Long contentId:hashMapIdAverageRating.keySet()){
             contentList.add(contentRepository.findById(contentId).get());
         }
 
         // Convert to ContentPojo which implements the runnable interface
-        List<ContentPojo> contentPojoList = convertContentToPojo(contentList,hashMapIdAverageRating);
+        List<ContentPojo> contentPojoList = convertContentToPojo(contentList,hashMapIdAverageRating, hashMapIdNumberRatings);
 
         // Sort the list so the best rating is top, max 5
         Collections.sort(contentPojoList);
@@ -225,6 +239,27 @@ public class NewsController {
         }
 
         return contentPojoList;
+    }
+
+    /**
+     * Gets all rated content, and checks how many ratings each content has
+     * Then stores the id and the number of ratings in the hashmap
+     *
+     * @return hashMapIdNumberRatings
+     */
+    private HashMap<Long,Long> getHashMapIdNumberRatings(){
+
+        HashMap<Long,Long> hashMapIdNumberRatings = new HashMap<Long,Long>();
+        // Get all rated news
+        List<Long> arrayListRatedContent = contentRepository.selectDistinctRatedContent();
+
+        // Get for every rated news the number of ratings
+        for(Long id:arrayListRatedContent){
+            Long countRatings = ratingRepository.countByContentId(id);
+            hashMapIdNumberRatings.put(id,countRatings);
+        }
+
+        return hashMapIdNumberRatings;
     }
 
     private HashMap<Long, Float> calculateAverageRating(List<Long> listRatedId) {
@@ -284,6 +319,7 @@ public class NewsController {
             List<Long> listRatedId = contentRepository.selectDistinctRatedContentWithCategoryInterval(category);
 
             HashMap<Long, Float> hashMapIdAverageRating = calculateAverageRating(listRatedId);
+            HashMap<Long,Long> hashMapIdNumberRatings = getHashMapIdNumberRatings();
 
             List<Content> contentList = new ArrayList<Content>();
 
@@ -294,7 +330,7 @@ public class NewsController {
             Data data = new Data();
             // Convert to ContentPojo which implements the runnable interface
             // Todo check complexity
-            List<ContentPojo> contentPojoList = convertContentToPojo(contentList,hashMapIdAverageRating);
+            List<ContentPojo> contentPojoList = convertContentToPojo(contentList,hashMapIdAverageRating,hashMapIdNumberRatings);
             // Sort the list so the best rating is top, max 5
             Collections.sort(contentPojoList);
 
@@ -383,7 +419,7 @@ public class NewsController {
         return arrayListContentPojo;
     }
 
-    private List<ContentPojo> convertContentToPojo(List<Content> contentList, HashMap<Long,Float> hashMap) {
+    private List<ContentPojo> convertContentToPojo(List<Content> contentList, HashMap<Long,Float> hashMap, HashMap<Long,Long> hashMapIdNumberRatings) {
 
         ArrayList<ContentPojo> arrayListContentPojo = new ArrayList<ContentPojo>();
 
@@ -395,6 +431,8 @@ public class NewsController {
 
             contentPojo.setRating(hashMap.get(content.getId()));
             contentPojo.setSource(source);
+            // What is the default value if there is no Rating?
+            contentPojo.setCountRatings(hashMapIdNumberRatings.get(content.getId()));
 
             arrayListContentPojo.add(contentPojo);
         }
