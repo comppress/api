@@ -24,7 +24,9 @@ public class FeedController {
     // Aggregate root
     // tag::get-aggregate-root[]
     @GetMapping("/feeds")
-    List<Feed> all(@RequestParam("count") Integer count, @RequestParam("timeFrame") String timeFrame) throws Exception {
+    List<Feed> all(@RequestParam("timeFrame") String timeFrame) throws Exception {
+
+        Integer count = 50;
 
         if (timeFrame.equals("day")) {
 

@@ -42,7 +42,8 @@ public class RestRatingController {
         // count_rating
         modifiedContent.setCountRating(modifiedContent.getCountRating() + 1);
         // sum_rating
-        modifiedContent.setSumRating((double) rating.getCredibility() + rating.getInformativity() + rating.getNeutrality());
+        double sum = modifiedContent.getSumRating() + rating.getCredibility() + rating.getInformativity() + rating.getNeutrality();
+        modifiedContent.setSumRating(sum);
         // average_rating, divide by 3 because we currently have 3 Rating categories
         double averageRating = modifiedContent.getSumRating() / (modifiedContent.getCountRating() * 3);
         modifiedContent.setAverageRating(averageRating);
