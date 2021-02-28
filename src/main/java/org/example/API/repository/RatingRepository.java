@@ -13,7 +13,7 @@ public interface RatingRepository extends JpaRepository<Rating,Long> {
 
     public boolean existsByPersonIdAndContentId(Long personId, Long contentId);
 
-    Rating findByPersonIdAndContentId(Long personId, Long contentId);
+    public Rating findByPersonIdAndContentId(Long personId, Long contentId);
 
     public Long countByContentId(Long contentId);
 

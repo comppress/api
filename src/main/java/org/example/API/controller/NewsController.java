@@ -45,10 +45,6 @@ public class NewsController {
     @Autowired
     CategoryOrder categoryOrder;
 
-    @GetMapping("/contents")
-    List<Content> allContents() {
-        return contentRepository.findAll();
-    }
     @GetMapping("/rssFeeds")
     List<RssFeed> allRssFeeds() {
         return rssFeedRepository.findAll();

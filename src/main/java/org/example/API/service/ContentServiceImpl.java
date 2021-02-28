@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ContentServiceImpl implements ContentService{
+public class ContentServiceImpl implements ContentService {
 
     Logger logger = LoggerFactory.getLogger(ContentServiceImpl.class);
 

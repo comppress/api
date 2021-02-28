@@ -22,6 +22,40 @@ public class Content {
     private String category;
     @Column(name="rss_feed_id")
     private Long rssFeedId;
+    @Column(name="count_rating")
+    private Long countRating;
+    @Column(name="average_rating")
+    private Double averageRating;
+    @Column(name="sum_rating")
+    private Double sumRating;
+
+    public void setSumRating(Double sumRating) {
+        this.sumRating = sumRating;
+    }
+
+    public Double getSumRating() {
+        return sumRating;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCountRating(Long countRating) {
+        this.countRating = countRating;
+    }
+
+    public void setAverageRating(Double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public Long getCountRating() {
+        return countRating;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
 
     public Long getRssFeedId() {
         return rssFeedId;
