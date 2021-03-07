@@ -14,6 +14,8 @@ public class Content {
     private String title;
     @Column(name="image_link")
     private String imageLink;
+    @Column(name="source")
+    private String source;
     @Column(name="description")
     private String description;
     @Column(name="creation_date", insertable=false)
@@ -31,6 +33,14 @@ public class Content {
 
     public void setSumRating(Double sumRating) {
         this.sumRating = sumRating;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public Double getSumRating() {

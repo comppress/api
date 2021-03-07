@@ -113,6 +113,7 @@ public class RestContentController {
                     content.setLink(newContent.getLink());
                     content.setTitle(newContent.getTitle());
                     content.setImageLink(newContent.getImageLink());
+                    content.setSource(newContent.getSource());
                     content.setSumRating(newContent.getSumRating());
                     content.setCountRating(newContent.getCountRating());
                     content.setAverageRating(newContent.getAverageRating());
