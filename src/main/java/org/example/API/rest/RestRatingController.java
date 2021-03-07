@@ -1,8 +1,11 @@
 package org.example.API.rest;
 
+import org.example.API.controller.NewsController;
 import org.example.API.model.Content;
 import org.example.API.model.Rating;
 import org.example.API.repository.RatingRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +13,8 @@ import java.util.List;
 
 @RestController
 public class RestRatingController {
+
+    Logger logger = LoggerFactory.getLogger(RestRatingController.class);
 
     @Autowired
     private RatingRepository repository;
@@ -26,13 +31,16 @@ public class RestRatingController {
 
     @PostMapping("/ratings")
     Rating newRating(@RequestBody Rating newRating) {
-        /*
-        // check that User has not rated Article
-        if(repository.findByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId())!=null){
-            // Should return an error code here
-            return null;
+
+        // check if rating already exists, meaning same person_id and content_id
+        if(repository.existsByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId())) {
+            // update rating
+            logger.info("updating rating for article " + newRating.getContentId() + " from user " + newRating.getPersonId());
+            Rating ratingFromDB = repository.findByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId());
+            replaceRating(ratingFromDB,ratingFromDB.getId());
+            logger.info("updated rating");
+
         }
-        */
         //TODO Includes this into a service class
 
         // Write to db
@@ -49,6 +57,7 @@ public class RestRatingController {
         modifiedContent.setAverageRating(averageRating);
         contentController.replaceContent(modifiedContent, modifiedContent.getId());
         return rating;
+
     }
 
     // Single item
@@ -60,8 +69,8 @@ public class RestRatingController {
 
     }
 
-    //TODO Needs to get same functions as Post does
-    @PutMapping("/ratings/{id}")
+    //Needs to get same functions as Post does
+    //@PutMapping("/ratings/{id}")
     Rating replaceRating(@RequestBody Rating newRating, @PathVariable Long id) {
 
         return repository.findById(id)
