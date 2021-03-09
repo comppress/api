@@ -65,7 +65,7 @@ public class MigrationController {
 
         for(Content content: contentList){
 
-            if(content.getSource().isEmpty()) {
+            if(content.getSource() == null || content.getSource().isEmpty()) {
 
                 Long rssFeedId = content.getRssFeedId();
                 Optional<RssFeed> rssFeed = rssFeedRepository.findById(rssFeedId);
