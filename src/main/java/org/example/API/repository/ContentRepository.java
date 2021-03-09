@@ -74,17 +74,17 @@ public interface ContentRepository extends JpaRepository<Content,Long> {
     public List<Content> selectContentMonth();
 
     //@Query(value= "SELECT * FROM mydb.content WHERE category = :categoryValue  AND >= NOW() - interval 1 :date ORDER BY average_rating DESC LIMIT :limitNumber ;" , nativeQuery = true)
-    @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating = 0 AND creation_date >= NOW() - interval 1 day ORDER BY average_rating DESC LIMIT :listLenght ;" , nativeQuery = true)
+    @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating = 0 AND creation_date >= NOW() - interval 1 day ORDER BY creation_date DESC LIMIT :listLenght ;" , nativeQuery = true)
     public List<Content> allDayNotRated(@Param("category") String category,@Param("listLenght") Integer listLenght);
     @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating >= 1 AND creation_date >= NOW() - interval 1 day ORDER BY average_rating DESC LIMIT :listLenght ;" , nativeQuery = true)
     public List<Content> allDayRated(@Param("category") String category,@Param("listLenght") Integer listLenght);
 
-    @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating = 0 AND creation_date >= NOW() - interval 1 week ORDER BY average_rating DESC LIMIT :listLenght ;" , nativeQuery = true)
+    @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating = 0 AND creation_date >= NOW() - interval 1 week ORDER BY creation_date DESC LIMIT :listLenght ;" , nativeQuery = true)
     public List<Content> allWeekNotRated(@Param("category") String category,@Param("listLenght") Integer listLenght);
     @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating >= 1 AND creation_date >= NOW() - interval 1 week ORDER BY average_rating DESC LIMIT :listLenght ;" , nativeQuery = true)
     public List<Content> allWeekRated(@Param("category") String category,@Param("listLenght") Integer listLenght);
 
-    @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating = 0 AND creation_date >= NOW() - interval 1 month ORDER BY average_rating DESC LIMIT :listLenght ;" , nativeQuery = true)
+    @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating = 0 AND creation_date >= NOW() - interval 1 month ORDER BY creation_date DESC LIMIT :listLenght ;" , nativeQuery = true)
     public List<Content> allMonthNotRated(@Param("category") String category,@Param("listLenght") Integer listLenght);
     @Query(value="SELECT * FROM mydb.content WHERE category = :category AND count_rating >= 1 AND creation_date >= NOW() - interval 1 month ORDER BY average_rating DESC LIMIT :listLenght ;" , nativeQuery = true)
     public List<Content> allMonthRated(@Param("category") String category,@Param("listLenght") Integer listLenght);

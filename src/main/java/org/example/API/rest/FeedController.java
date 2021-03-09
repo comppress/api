@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,7 @@ public class FeedController {
     @GetMapping("/feeds")
     List<Feed> all(@RequestParam("timeFrame") String timeFrame) throws Exception {
 
-        Integer count = 50;
+        Integer count = 25;
 
         if (timeFrame.equals("day")) {
 
@@ -35,6 +36,7 @@ public class FeedController {
             for (String category : categoryOrder.getListCategories()) {
 
                 List<Content> unratedContent = contentController.all(category, "false", count, timeFrame);
+                Collections.reverse(unratedContent);
                 List<Content> ratedContent = contentController.all(category, "true", count, timeFrame);
                 int size = unratedContent.size();
 
