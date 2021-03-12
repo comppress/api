@@ -36,9 +36,14 @@ public class RestRatingController {
         if(repository.existsByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId())) {
             // update rating
             logger.info("updating rating for article " + newRating.getContentId() + " from user " + newRating.getPersonId());
-            Rating ratingFromDB = repository.findByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId());
-            replaceRating(ratingFromDB,ratingFromDB.getId());
+            // By accepting a list, we avoid the error of dublicate ratings in the database throwing an exception
+            List<Rating> listOldRatings = repository.nativeQueryfindByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId());
+            Rating oldRating = listOldRatings.get(0);
+            // Recalculate Content Object, setting new average rating and rating sum
+            recalculateContent(oldRating, newRating);
+            Rating replacedRating = replaceRating(newRating,oldRating.getId());
             logger.info("updated rating");
+            return replacedRating;
 
         }
         //TODO Includes this into a service class
@@ -57,6 +62,27 @@ public class RestRatingController {
         modifiedContent.setAverageRating(averageRating);
         contentController.replaceContent(modifiedContent, modifiedContent.getId());
         return rating;
+
+    }
+
+    private void recalculateContent(Rating oldRating, Rating newRating) {
+
+        Content content = contentController.one(oldRating.getContentId());
+
+        // Recalculate the attributes sumRating, averageRating
+        // countRating stays the same (obv)
+
+        // Currently we only have these 3 Criteria set
+        double oldSumRating = oldRating.getCredibility() + oldRating.getInformativity() + oldRating.getNeutrality();
+        double newSumRating = newRating.getCredibility() + newRating.getInformativity() + newRating.getNeutrality();
+        double sumRating = content.getSumRating() - oldSumRating + newSumRating;
+
+        double averageRating =  sumRating / (content.getCountRating() * 3);
+
+        content.setSumRating(sumRating);
+        content.setAverageRating(averageRating);
+
+        contentController.replaceContent(content,content.getId());
 
     }
 
