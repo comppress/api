@@ -3,6 +3,7 @@ package org.example.API.component;
 import org.example.API.controller.PersonController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +24,7 @@ public class CategoryOrder {
 
     private List<String> listCategories = new ArrayList<String>();
 
-    String rssFeedCategories = "\"1\";\"Politik\"\n" +
+    String rssFeedCategoriesGerman = "\"1\";\"Politik\"\n" +
             "\"2\";\"Wirtschaft, Finanzen, Immobilien\"\n" +
             "\"3\";\"Kultur, Geschichte und Feuilleton\"\n" +
             "\"4\";\"IT, Internet, Digitales, Technik, Technologie\"\n" +
@@ -38,17 +39,30 @@ public class CategoryOrder {
             "\"13\";\"Sport\"\n" +
             "\"14\";\"Auto, Motor\"";
 
+    String rssFeedCategoriesEnglish = "\"1\";\"politics\"\n" +
+            "\"2\";\"Economy, finance, real estate\"\n" +
+            "\"3\";\"Culture, history and features\"\n" +
+            "\"4\";\"Car, engine\"";
+
+
+    // https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config
+    @Value("${language}")
+    private String language;
+
     @PostConstruct
     public void init() throws URISyntaxException {
+        logger.info("Language for Categories is " + language);
 
-        listCategories = parseCategories(rssFeedCategories);
+        if (language.equals("en")){
+            listCategories = parseCategories(rssFeedCategoriesEnglish);
+        }else{
+            listCategories = parseCategories(rssFeedCategoriesGerman);
+        }
     }
 
     public List<String> parseCategories(String rssFeedCategories){
 
         String lines[] = rssFeedCategories.split("\\r?\\n");
-
-
 
         for (String line:lines){
 
