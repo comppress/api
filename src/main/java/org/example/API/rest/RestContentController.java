@@ -14,6 +14,8 @@ public class RestContentController {
     @Autowired
     private ContentRepository repository;
 
+    public static double sum;
+
     // Aggregate root
     // tag::get-aggregate-root[]
     @GetMapping("/contents")
@@ -33,7 +35,21 @@ public class RestContentController {
             if(timeFrame.equals("day")){
                 if(rating.equals("true")){
                     return repository.allDayRated(category,count);
-                }else return repository.allDayNotRated(category,count);
+                }else {
+                    long start = System.nanoTime();
+
+                    List<Content> contentList= repository.allDayNotRated(category,count);
+
+                    long finish = System.nanoTime();
+                    long timeElapsed = finish - start;
+
+                    System.out.println("DB Query" + timeElapsed);
+                    double seconds = (double)timeElapsed / 1_000_000_000.0;
+                    sum += seconds;
+                    System.out.println("DB Query" + seconds);
+                    System.out.println("DB Query seconds sum " + sum);
+                    return contentList;
+                }
 
             }else if(timeFrame.equals("week")){
                 if(rating.equals("true")){

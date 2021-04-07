@@ -39,10 +39,16 @@ public class CategoryOrder {
             "\"13\";\"Sport\"\n" +
             "\"14\";\"Auto, Motor\"";
 
-    String rssFeedCategoriesEnglish = "\"1\";\"politics\"\n" +
-            "\"2\";\"Economy, finance, real estate\"\n" +
-            "\"3\";\"Culture, history and features\"\n" +
-            "\"4\";\"Car, engine\"";
+    String rssFeedCategoriesEnglish = "\"1\";\"News, Latest Stories\"\n" +
+            "\"2\";\"Business, Money, Economy, Real Estate, Finance\"\n" +
+            "\"3\";\"Education, History, College, Culture, Arts\"\n" +
+            "\"4\";\"Health, Science, Technology, Auto, Space, Nature\"\n" +
+            "\"5\";\"Opinion, Comment, Views\"\n" +
+            "\"6\";\"Entertainment, Lifestyle, Fashion, Beauty, Food\"\n" +
+            "\"7\";\"Media, Showbiz, TV, Radio, Celebrities\"\n" +
+            "\"8\";\"Sports\"\n" +
+            "\"9\";\"Travel\"\n" +
+            "\"10\";\"Miscellaneous\"";
 
 
     // https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config

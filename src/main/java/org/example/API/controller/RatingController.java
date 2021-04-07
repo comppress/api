@@ -88,7 +88,7 @@ public class RatingController {
         }
 
         // number random ratings
-        int numberRatings = 100;
+        int numberRatings = 1000;
 
         List<Content> contentList = contentRepository.selectRandomList(numberRatings);
 

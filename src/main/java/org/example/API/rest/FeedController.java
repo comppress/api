@@ -22,12 +22,16 @@ public class FeedController {
     @Autowired
     private CategoryOrder categoryOrder;
 
+    public static double sum;
+
     // Aggregate root
     // tag::get-aggregate-root[]
     @GetMapping("/feeds")
     List<Feed> all(@RequestParam("timeFrame") String timeFrame) throws Exception {
 
         Integer count = 25;
+
+        long start = System.nanoTime();
 
         if (timeFrame.equals("day")) {
 
@@ -48,6 +52,13 @@ public class FeedController {
                 listFeed.add(feed);
             }
 
+            long finish = System.nanoTime();
+            long timeElapsed = finish - start;
+
+            System.out.println("1 Nanoseconds " + timeElapsed);
+            double seconds = (double)timeElapsed / 1_000_000_000.0;
+            System.out.println(" Seconds " + seconds);
+
             return listFeed;
 
         }else{
@@ -61,6 +72,13 @@ public class FeedController {
                 feed.setPositionRatedNewsStart(0);
                 listFeed.add(feed);
             }
+
+            long finish = System.nanoTime();
+            long timeElapsed = finish - start;
+
+            System.out.println("2 Nanoseconds " + timeElapsed);
+            double seconds = (double)timeElapsed / 1_000_000_000.0;
+            System.out.println(" Seconds " + seconds);
 
             return listFeed;
 
