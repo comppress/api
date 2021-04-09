@@ -1,10 +1,14 @@
 # api
 
 ### URLs
-*/createTestUser* 
+*/createTestUser*
+
 */userReference (user handling)*
+
 */feeds*
+
 */contents*
+
 */ratings*
 
 ### Spring Boot Actuator
