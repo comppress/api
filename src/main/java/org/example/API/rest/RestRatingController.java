@@ -1,6 +1,5 @@
 package org.example.API.rest;
 
-import org.example.API.controller.NewsController;
 import org.example.API.model.Content;
 import org.example.API.model.Rating;
 import org.example.API.repository.RatingRepository;
@@ -22,8 +21,6 @@ public class RestRatingController {
     @Autowired
     private RestContentController contentController;
 
-    // Aggregate root
-    // tag::get-aggregate-root[]
     @GetMapping("/ratings")
     List<Rating> all() {
         return repository.findAll();
@@ -36,8 +33,8 @@ public class RestRatingController {
         if(repository.existsByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId())) {
             // update rating
             logger.info("updating rating for article " + newRating.getContentId() + " from user " + newRating.getPersonId());
-            // By accepting a list, we avoid the error of dublicate ratings in the database throwing an exception
-            List<Rating> listOldRatings = repository.nativeQueryfindByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId());
+            // By accepting a list, we avoid the error of duplicate ratings in the database throwing an exception
+            List<Rating> listOldRatings = repository.selectRatingByPersonIdAndContentId(newRating.getPersonId(),newRating.getContentId());
             Rating oldRating = listOldRatings.get(0);
             // Recalculate Content Object, setting new average rating and rating sum
             recalculateContent(oldRating, newRating);
@@ -46,8 +43,6 @@ public class RestRatingController {
             return replacedRating;
 
         }
-        //TODO Includes this into a service class
-
         // Write to db
         Rating rating = repository.save(newRating);
         // Calculate Content (sum_rating, average_rating, count_rating)
@@ -70,8 +65,6 @@ public class RestRatingController {
         Content content = contentController.one(oldRating.getContentId());
 
         // Recalculate the attributes sumRating, averageRating
-        // countRating stays the same (obv)
-
         // Currently we only have these 3 Criteria set
         double oldSumRating = oldRating.getCredibility() + oldRating.getInformativity() + oldRating.getNeutrality();
         double newSumRating = newRating.getCredibility() + newRating.getInformativity() + newRating.getNeutrality();

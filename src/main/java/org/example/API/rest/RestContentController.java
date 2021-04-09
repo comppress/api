@@ -5,7 +5,6 @@ import org.example.API.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -14,40 +13,20 @@ public class RestContentController {
     @Autowired
     private ContentRepository repository;
 
-    public static double sum;
-
-    // Aggregate root
-    // tag::get-aggregate-root[]
     @GetMapping("/contents")
     List<Content> all(@RequestParam("category") String category,@RequestParam("rating") String rating, @RequestParam("count") Integer count, @RequestParam("timeFrame") String timeFrame) {
 
-        // TODO Rating true false richtig umsetzen, heißt false das nicht gerateded Nachrichten angezeigt werden, i guess !?
-        // Rated Articles haben ein count Rating greater 0, Unrated equals 0
-
-        // Method handling all 4 Arguments
         if(!timeFrame.isEmpty()&&!count.equals(null)&&!category.isEmpty()){
             if(!(timeFrame.equals("day") || timeFrame.equals("week") || timeFrame.equals("month"))){
                System.out.print("Wrong Input");
                return null;
             }
-            // Todo, good way of handling time Zones, pass a Timeframe in SQL, probably better, can search for this via Spring Data, frontend need to provide Frame
-            // Must be a away to configure this, instead of doing this in such a static way
+
             if(timeFrame.equals("day")){
                 if(rating.equals("true")){
                     return repository.allDayRated(category,count);
                 }else {
-                    long start = System.nanoTime();
-
                     List<Content> contentList= repository.allDayNotRated(category,count);
-
-                    long finish = System.nanoTime();
-                    long timeElapsed = finish - start;
-
-                    System.out.println("DB Query" + timeElapsed);
-                    double seconds = (double)timeElapsed / 1_000_000_000.0;
-                    sum += seconds;
-                    System.out.println("DB Query" + seconds);
-                    System.out.println("DB Query seconds sum " + sum);
                     return contentList;
                 }
 
@@ -65,20 +44,15 @@ public class RestContentController {
 
         // Sorted by rating
         if(!category.isEmpty()&&rating.equals("true")){
-            return repository.nativeQueryfindByCountRatingGreaterThanAndCategory(category);
+            return repository.selectCountRatingGreaterThanAndCategory(category);
         }
 
         // Sorted by rating
         if(!category.isEmpty()&&rating.equals("false")){
             // Count Rating 0, to make sure
-            return repository.nativeQueryfindByCountRatingEqualsAndAndCategory(category);
+            return repository.selectCountRatingEqualsAndAndCategory(category);
         }
 
-        // TODO Generate Query String during RunTime?
-
-        // TODO for Future, no static time intervals, instead dynamic Time Frame
-
-        //timeframe, category, Sorted by rating, count
         if(!timeFrame.isEmpty()){
             if(timeFrame.equals("day")){
                 return repository.selectContentDay();
@@ -89,7 +63,6 @@ public class RestContentController {
             else if(timeFrame.equals("month")){
                 return repository.selectContentMonth();
             }else{
-                // Todo Throw Error Code
                 System.out.println("Invalid Argument");
             }
         }

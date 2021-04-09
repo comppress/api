@@ -13,6 +13,6 @@ public interface RssFeedRepository extends JpaRepository<RssFeed,Long> {
     public boolean existsByLinkRssFeed(String linkRssFeed);
 
     @Query(value = "SELECT DISTINCT(category) FROM mydb.rss_feed;", nativeQuery = true)
-    public List<String> dinstinctCategories();
+    public List<String> distinctCategories();
 
 }

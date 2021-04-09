@@ -7,7 +7,6 @@ import org.example.API.repository.ContentRepository;
 import org.example.API.repository.PublisherRepository;
 import org.example.API.repository.RatingRepository;
 import org.example.API.repository.RssFeedRepository;
-import org.example.API.service.RssFeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +32,7 @@ public class MigrationController {
     @Autowired
     PublisherRepository publisherRepository;
 
-    @GetMapping("migrateRatings")
+    @GetMapping("/migrateRatings")
     public void migrateRatings(){
 
         List<Rating> ratingList = ratingRepository.findAll();
@@ -56,7 +55,7 @@ public class MigrationController {
 
     }
 
-    @GetMapping("migrateContentSource")
+    @GetMapping("/migrateContentSource")
     public void migrateContent(){
 
         List<Content> contentList = contentRepository.findAll();

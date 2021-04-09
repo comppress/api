@@ -28,8 +28,5 @@ public class APIApplication extends SpringBootServletInitializer {
         // Setting Spring Boot SetTimeZone
         TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
         logger.info("Time: " + new Date());
-
-        String test = new String("Hello");
-
     }
 }

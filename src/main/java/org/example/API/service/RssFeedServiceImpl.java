@@ -28,7 +28,7 @@ public class RssFeedServiceImpl implements RssFeedService{
 
     @Override
     public Long getId(String url) {
-        // Guter Style, Joe Fragen?? Sollte ja eigentlich immer ein Elem sein
+
         RssFeed rssFeed = rssFeedRepository.findByLinkRssFeed(url);
         return rssFeed.getId();
     }
@@ -80,7 +80,7 @@ public class RssFeedServiceImpl implements RssFeedService{
 
     @Override
     public List<String> getAllCategories() {
-        return rssFeedRepository.dinstinctCategories();
+        return rssFeedRepository.distinctCategories();
     }
 
 

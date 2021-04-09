@@ -3,12 +3,10 @@ package org.example.API.rest;
 import org.example.API.component.CategoryOrder;
 import org.example.API.model.Content;
 import org.example.API.model.Feed;
-import org.example.API.model.Rating;
-import org.example.API.repository.RatingRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,10 +20,6 @@ public class FeedController {
     @Autowired
     private CategoryOrder categoryOrder;
 
-    public static double sum;
-
-    // Aggregate root
-    // tag::get-aggregate-root[]
     @GetMapping("/feeds")
     List<Feed> all(@RequestParam("timeFrame") String timeFrame) throws Exception {
 
@@ -55,9 +49,8 @@ public class FeedController {
             long finish = System.nanoTime();
             long timeElapsed = finish - start;
 
-            System.out.println("1 Nanoseconds " + timeElapsed);
             double seconds = (double)timeElapsed / 1_000_000_000.0;
-            System.out.println(" Seconds " + seconds);
+            System.out.println("/feeds request took " + seconds + "Seconds");
 
             return listFeed;
 
@@ -76,9 +69,8 @@ public class FeedController {
             long finish = System.nanoTime();
             long timeElapsed = finish - start;
 
-            System.out.println("2 Nanoseconds " + timeElapsed);
             double seconds = (double)timeElapsed / 1_000_000_000.0;
-            System.out.println(" Seconds " + seconds);
+            System.out.println("/feeds request took " + seconds + "Seconds");
 
             return listFeed;
 

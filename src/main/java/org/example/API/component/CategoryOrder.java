@@ -50,13 +50,11 @@ public class CategoryOrder {
             "\"9\";\"Travel\"\n" +
             "\"10\";\"Miscellaneous\"";
 
-
-    // https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config
     @Value("${language}")
     private String language;
 
     @PostConstruct
-    public void init() throws URISyntaxException {
+    public void init() {
         logger.info("Language for Categories is " + language);
 
         if (language.equals("en")){
