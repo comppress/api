@@ -1,12 +1,11 @@
 # api
 
 ### URLs
-/createTestUser 
-/userReference (user handling)
-/feeds
-/contents
-/ratings
-
+*/createTestUser* 
+*/userReference (user handling)* 
+*/feeds* 
+*/contents* 
+*/ratings* 
 ### Spring Boot Actuator
 Add the dependency to the pom.xml
 ```
