@@ -79,12 +79,12 @@ public class RestContentController {
 
         return repository.findAll();
     }
-
+    /*
     @PostMapping("/contents")
     Content newContents(@RequestBody Content newContent) {
         return repository.save(newContent);
     }
-
+    */
     // Single item
     @GetMapping("/contents/{id}")
     Content one(@PathVariable Long id) throws RatingNotFoundException {
@@ -93,6 +93,7 @@ public class RestContentController {
                 .orElseThrow(() -> new RatingNotFoundException(id));
 
     }
+
 
     @PutMapping("/contents/{id}")
     Content replaceContent(@RequestBody Content newContent, @PathVariable Long id) {
