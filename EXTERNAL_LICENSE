@@ -1,0 +1,54 @@
+Library: spring-boot-starter-web
+License: Apache License, Version 2.0
+Date: - 
+Author: Authors Spring Boot Starter Web
+
+Library: spring-boot-starter-tomcat
+License: Apache License, Version 2.0
+Date: -
+Author: Pivotal Software, Inc. 
+
+Library: json-simple
+License: Apache License, Version 2.0
+Date: Mar 21, 2012
+Author: Yidong Fang
+
+Library: spring-boot-starter-data-jpa
+License: Apache License, Version 2.0
+Date: -
+Author: Authors Spring Boot Starter Data JPA 
+
+Library: spring-boot-starter-actuator
+License: Apache License, Version 2.0
+Date: - 
+Author: Authors Srping Boot Starter Actuator
+
+Library: mysql-connector-java
+License: GPL 2.0
+Date: - 
+Author: -
+
+Library: spring-boot-starter-freemarker
+License: Apache License, Version 2.0
+Date: -
+Author: Authors Spring Boot Starter Freemarker 
+
+Library: commons-lang3
+License: Apache License, Version 2.0
+Date: - 
+Author: Authors Commons Lang
+
+Library: jsoup
+License: MIT
+Date: -
+Author: Auhtors jsoup
+
+Library: httpclient
+License: Apache License, Version 2.0
+Date: - 
+Author: Auhtors httpclient
+
+Library: maven-jar-plugin
+License: Apache License, Version 2.0
+Date: -
+Author: Authors maven-jar-plugin
